@@ -1,0 +1,76 @@
+services:
+  nomad:
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+    command:
+      - agent
+      - "-config"
+      - "/etc/nomad"
+    environment:
+      NOMAD_SKIP_DOCKER_IMAGE_WARN: "true"
+      NVIDIA_VISIBLE_DEVICES: void
+      TZ: Europe/Berlin
+    hostname: truenas.lo0.org.ua
+    image: hashicorp/nomad:1.9.7
+    network_mode: host
+    platform: linux/amd64
+    privileged: True
+    pull_policy: always
+    restart: always
+    stdin_open: False
+    tty: False
+    volumes:
+      - bind:
+          create_host_path: False
+          propagation: rprivate
+        read_only: False
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        type: bind
+      - bind:
+          create_host_path: False
+          propagation: rprivate
+        read_only: False
+        source: /mnt/vm/nomad/lib
+        target: /var/lib/nomad
+        type: bind
+      - bind:
+          create_host_path: False
+          propagation: rprivate
+        read_only: False
+        source: /mnt/vm/nomad/etc
+        target: /etc/nomad
+        type: bind
+      # - bind:
+      #     create_host_path: False
+      #     propagation: rshared
+      #   read_only: False
+      #   source: /mnt/.ix-apps/docker
+      #   target: /var/lib/docker
+      #   type: bind
+      - bind:
+          create_host_path: False
+          propagation: rshared
+        read_only: False
+        source: /sys
+        target: /sys
+        type: bind
+volumes: {}
+x-notes: >+
+  # HashiCorp Nomad
+
+  Nomad containers orchestrator.
+
+x-portals:
+  - host: 0.0.0.0
+    name: Nomad
+    path: /
+    port: 4646
+    scheme: http
+# x-metadata:
+#   icon_url: https://github.com/hashicorp/nomad/raw/main/website/public/img/logo-hashicorp.svg
+#   app_version: 1.9.7
+#   version: 0.1.0
+#   title: HashiCorp Nomad
+#   description: Nomad containers orchestrator.
