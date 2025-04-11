@@ -12,7 +12,7 @@ services:
       NVIDIA_VISIBLE_DEVICES: void
       TZ: Europe/Berlin
     hostname: truenas.lo0.org.ua
-    image: hashicorp/nomad:1.9.7
+    image: hashicorp/nomad:1.10.0
     network_mode: host
     platform: linux/amd64
     privileged: True
