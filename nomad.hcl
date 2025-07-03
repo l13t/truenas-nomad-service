@@ -1,4 +1,4 @@
-data_dir = "/var/lib/nomad"
+data_dir = "/mnt/vm/nomad/lib"
 bind_addr = "0.0.0.0"
 datacenter = "dc1"
 disable_update_check = true
@@ -21,10 +21,25 @@ server {
       sysbatch_scheduler_enabled = true # New in Nomad 1.2
     }
   }
+
+  server_join {
+    retry_join = [
+      # Servers list
+    ]
+  }
+}
+
+advertise {
+  http = "<ip>"
+  rpc  = "<ip>"
+  serf = "<ip>"
 }
 
 client {
   enabled = true
+  servers = [
+    # Servers list
+  ]
   options {
     "docker.volumes.enabled" = "true"
   }
@@ -61,10 +76,8 @@ plugin "docker" {
 
     allow_privileged = true
     allow_caps       = ["audit_write", "chown", "dac_override", "fowner", "fsetid", "kill", "mknod", "net_bind_service", "setfcap", "setgid", "setpcap", "setuid", "sys_chroot", "net_raw", "ep"]
-
   }
 }
-
 
 telemetry {
   publish_allocation_metrics = true

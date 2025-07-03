@@ -6,7 +6,7 @@ services:
     command:
       - agent
       - "-config"
-      - "/etc/nomad"
+      - /etc/nomad
     environment:
       NOMAD_SKIP_DOCKER_IMAGE_WARN: "true"
       NVIDIA_VISIBLE_DEVICES: void
@@ -29,26 +29,19 @@ services:
         target: /var/run/docker.sock
         type: bind
       - bind:
-          create_host_path: False
-          propagation: rprivate
+          create_host_path: True
+          propagation: rshared
         read_only: False
         source: /mnt/vm/nomad/lib
-        target: /var/lib/nomad
+        target: /mnt/vm/nomad/lib
         type: bind
       - bind:
-          create_host_path: False
+          create_host_path: True
           propagation: rprivate
         read_only: False
         source: /mnt/vm/nomad/etc
         target: /etc/nomad
         type: bind
-      # - bind:
-      #     create_host_path: False
-      #     propagation: rshared
-      #   read_only: False
-      #   source: /mnt/.ix-apps/docker
-      #   target: /var/lib/docker
-      #   type: bind
       - bind:
           create_host_path: False
           propagation: rshared
@@ -57,9 +50,8 @@ services:
         target: /sys
         type: bind
 volumes: {}
-x-notes: >+
+x-notes: |+
   # HashiCorp Nomad
-
   Nomad containers orchestrator.
 
 x-portals:
@@ -70,7 +62,7 @@ x-portals:
     scheme: http
 # x-metadata:
 #   icon_url: https://github.com/hashicorp/nomad/raw/main/website/public/img/logo-hashicorp.svg
-#   app_version: 1.9.7
+#   app_version: 1.10.0
 #   version: 0.1.0
 #   title: HashiCorp Nomad
 #   description: Nomad containers orchestrator.
